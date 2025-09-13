@@ -2,6 +2,7 @@ package authen
 
 import (
 	"context"
+	"errors"
 	"os"
 
 	"github.com/coreos/go-oidc/v3/oidc"
@@ -33,4 +34,18 @@ func New() (*Authenticator, error) {
 		Config:   conf,
 		Provider: provider,
 	}, nil
+}
+
+// ParseIDToken extracts and verifies the ID Token from the OAuth2 token.
+func (a *Authenticator) ParseIDToken(ctx context.Context, authToken *oauth2.Token) (*oidc.IDToken, error) {
+	rawIDToken, ok := authToken.Extra("id_token").(string)
+	if !ok {
+		return nil, errors.New("auth token does not contain an id token")
+	}
+
+	conf := &oidc.Config{
+		ClientID: a.ClientID,
+	}
+
+	return a.Verifier(conf).Verify(ctx, rawIDToken)
 }

@@ -22,7 +22,9 @@ func New(auth *authen.Authenticator) *gin.Engine {
 	r.LoadHTMLGlob("web/template/*")
 
 	r.GET("/", web.HomeHandler)
+	r.GET("/callback", web.AuthCallbackHandler(auth))
 	r.GET("/login", web.LoginHandler(auth))
+	r.GET("/profile", web.ProfileHandler)
 
 	return r
 }
