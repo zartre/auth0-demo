@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/joho/godotenv"
 	"github.com/nzartre/auth0-demo/internal/authen"
 	"github.com/nzartre/auth0-demo/internal/router"
@@ -18,5 +20,5 @@ func main() {
 	}
 
 	r := router.New(auth)
-	r.Run(":8080")
+	r.Run(":" + os.Getenv("APP_PORT"))
 }
