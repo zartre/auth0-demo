@@ -25,6 +25,7 @@ func New(auth *authen.Authenticator) *gin.Engine {
 	r.GET("/", web.HomeHandler)
 	r.GET("/callback", web.AuthCallbackHandler(auth))
 	r.GET("/login", web.LoginHandler(auth))
+	r.GET("/logout", web.LogoutHandler)
 	r.GET("/profile", middleware.MustAuthen, web.ProfileHandler)
 
 	return r
