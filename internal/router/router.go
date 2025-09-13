@@ -7,6 +7,7 @@ import (
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"github.com/nzartre/auth0-demo/internal/authen"
+	"github.com/nzartre/auth0-demo/internal/middleware"
 	web "github.com/nzartre/auth0-demo/web/controller"
 )
 
@@ -24,7 +25,7 @@ func New(auth *authen.Authenticator) *gin.Engine {
 	r.GET("/", web.HomeHandler)
 	r.GET("/callback", web.AuthCallbackHandler(auth))
 	r.GET("/login", web.LoginHandler(auth))
-	r.GET("/profile", web.ProfileHandler)
+	r.GET("/profile", middleware.MustAuthen, web.ProfileHandler)
 
 	return r
 }
